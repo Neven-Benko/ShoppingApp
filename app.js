@@ -12,12 +12,39 @@ const itemsinDB = ref(database, "shopping-list");
 
 const inputField = document.getElementById("input");
 const addButton = document.getElementById("button");
+const shoppingList = document.getElementById("shopping-list")
 
 addButton.addEventListener("click", () => {
     let inputValue = inputField.value;
-    let listItem = document.createElement("li");
-
+    
     push(itemsinDB, inputValue);
 
-    console.log(`${inputValue} added`);
+    clearInputField();
 })
+
+function addShoppingItemToList(itemValue) {
+   return  shoppingList.innerHTML += `<li>${itemValue}</li>`;
+    
+}
+
+function clearInputField() {
+    return inputField.value = "";
+}
+
+onValue(itemsinDB, function(snapshot) {
+    let shoppingArray = Object.values(snapshot.val());
+    
+    clearShoppingList();
+    
+    for (let i = 0; i < shoppingArray.length; i++) {
+        let currentShoppingList = shoppingArray[i];
+        addShoppingItemToList(currentShoppingList);
+    }
+    
+})
+
+function clearShoppingList() {
+    return shoppingList.innerHTML = "";
+}
+
+
